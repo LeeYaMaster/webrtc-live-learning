@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>研播 Live Lab — WebRTC 直播学习</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="page-home">
+  <div class="ambient" aria-hidden="true"></div>
+  <header class="topbar topbar-home">
+    <a class="brand" href="./">
+      <span class="brand-led" aria-hidden="true"></span>
+      <span class="brand-name">研播</span>
+      <span class="brand-sub">Live Lab</span>
+    </a>
+    <p class="topbar-tag">浏览器原生 WebRTC · 一对多直播教学</p>
+  </header>
+
+  <main class="home">
+    <section class="hero">
+      <p class="eyebrow">写给想搞懂直播链路的开发者</p>
+      <h1>一个人开播，<br />多个人在同一个房间里看。</h1>
+      <p class="lede">
+        全程使用浏览器自带的 <code>RTCPeerConnection</code>、<code>getUserMedia</code>，
+        不用包装库把 SDP 和 ICE 藏起来。主播为每位观众单独建一条连接，
+        信令过程会实时写在房间右侧的学习面板里。
+      </p>
+    </section>
+
+    <section class="entry-card" aria-label="进入房间">
+      <label class="field">
+        <span>昵称</span>
+        <input id="nickname" type="text" maxlength="16" placeholder="怎么称呼你" autocomplete="nickname" />
+      </label>
+
+      <button type="button" class="btn btn-primary btn-block" id="btn-create">
+        创建房间，我来当主播
+      </button>
+
+      <div class="or-row" role="separator">或加入已有房间</div>
+
+      <div class="join-row">
+        <label class="field field-grow">
+          <span>房间号</span>
+          <input id="room-code" type="text" maxlength="6" placeholder="例如 7K3MPQ" spellcheck="false" autocomplete="off" />
+        </label>
+        <button type="button" class="btn btn-secondary" id="btn-join">加入观看</button>
+      </div>
+    </section>
+
+    <section class="path" aria-label="学习路径">
+      <article>
+        <span class="step-no">1</span>
+        <h2>开房间</h2>
+        <p>信令服务器只分配一个短房间号，并记住谁是主播。音视频不经过服务器。</p>
+      </article>
+      <article>
+        <span class="step-no">2</span>
+        <h2>采集并开播</h2>
+        <p>主播调用 getUserMedia 拿到本地流。有观众时，为每个人 createOffer。</p>
+      </article>
+      <article>
+        <span class="step-no">3</span>
+        <h2>握手后直连</h2>
+        <p>观众回 Answer，双方交换 ICE 候选。连通后媒体走 P2P，学习面板会标出状态。</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="home-foot">
+    仅用于本地学习。生产级直播通常会改用 SFU，原因写在 README 里。
+  </footer>
+
+  <script type="module" src="./js/home.js"></script>
+</body>
+</html>

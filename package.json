@@ -1,0 +1,16 @@
+{
+  "name": "webrtc-live-learning",
+  "version": "1.0.0",
+  "private": true,
+  "description": "研播 Live Lab — 用浏览器原生 WebRTC 学习一对多直播",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  }
+}

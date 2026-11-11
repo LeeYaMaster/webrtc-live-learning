@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>房间 · 研播 Live Lab</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body class="page-room">
+  <div class="ambient" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="./">
+      <span class="brand-led" aria-hidden="true"></span>
+      <span class="brand-name">研播</span>
+      <span class="brand-sub">Live Lab</span>
+    </a>
+
+    <div class="room-meta">
+      <span class="role-badge" id="role-badge">…</span>
+      <button type="button" class="code-chip" id="btn-copy-code" title="复制房间号">
+        房间 <strong id="room-code-display">------</strong>
+      </button>
+      <span class="meta-item">观众 <strong id="viewer-count">0</strong></span>
+      <span class="live-badge" id="live-badge"><span class="live-dot"></span>未开播</span>
+    </div>
+
+    <div class="topbar-actions">
+      <span class="self-name" id="self-name"></span>
+      <button type="button" class="btn btn-ghost btn-sm" id="btn-copy-link">复制观看链接</button>
+      <button type="button" class="btn btn-ghost btn-sm" id="btn-leave">离开</button>
+    </div>
+  </header>
+
+  <main class="room">
+    <section class="stage-col">
+      <div class="stage">
+        <div class="video-shell">
+          <video id="live-video" playsinline autoplay></video>
+          <div id="video-placeholder" class="video-placeholder">
+            <span class="placeholder-mark" aria-hidden="true"></span>
+            <p>画面将出现在这里</p>
+          </div>
+          <div id="danmaku-layer" class="danmaku-layer" aria-hidden="true"></div>
+          <p class="stage-note is-hidden" id="stage-note"></p>
+        </div>
+
+        <div class="mixer is-hidden" id="host-controls">
+          <button type="button" class="btn btn-primary" id="btn-live">开始直播</button>
+          <button type="button" class="btn btn-secondary" id="btn-mute" disabled>静音</button>
+          <button type="button" class="btn btn-secondary" id="btn-camera" disabled>关闭摄像头</button>
+          <button type="button" class="btn btn-secondary" id="btn-share" disabled>共享屏幕</button>
+        </div>
+        <p class="viewer-hint is-hidden" id="viewer-hint">你现在是观众。主播开播后，这里会自动建立连接并播放。</p>
+      </div>
+
+      <section class="chat-panel" aria-label="房间聊天">
+        <header class="panel-head">
+          <h2>弹幕</h2>
+          <p>经信令服务器广播，不走 DataChannel，方便对照日志。</p>
+        </header>
+        <div class="chat-list" id="chat-list"></div>
+        <form class="chat-form" id="chat-form">
+          <input id="chat-input" type="text" maxlength="200" placeholder="说一句，会从画面上飘过…" autocomplete="off" />
+          <button type="submit" class="btn btn-secondary">发送</button>
+        </form>
+      </section>
+    </section>
+
+    <aside class="learn-panel" aria-label="学习面板">
+      <header class="panel-head">
+        <h2>学习面板</h2>
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-clear-log">清空日志</button>
+      </header>
+
+      <div class="stage-banner">
+        <span class="stage-kicker">当前走到哪一步</span>
+        <p id="stage-text">正在连接信令服务器…</p>
+      </div>
+
+      <div class="learn-block">
+        <h3>连接状态</h3>
+        <div id="peer-states" class="peer-states">
+          <p class="peer-empty">还没有 PeerConnection。开播并有观众进入后会出现在这里。</p>
+        </div>
+      </div>
+
+      <div class="learn-block log-block">
+        <h3>信令日志</h3>
+        <div id="log-list" class="log-list" role="log" aria-live="polite"></div>
+      </div>
+
+      <details class="sdp-box">
+        <summary>最近一份 SDP（可展开）</summary>
+        <pre id="sdp-snippet" class="sdp-snippet">开播并完成一次 Offer / Answer 后，这里会显示 SDP 原文，便于对照 type、媒体行和 ICE 相关字段。</pre>
+      </details>
+    </aside>
+  </main>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="./js/room.js"></script>
+</body>
+</html>
